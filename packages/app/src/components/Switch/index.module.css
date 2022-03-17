@@ -1,0 +1,77 @@
+/* Copied from https://codepen.io/SaraSoueidan/pen/jpBbrq  */
+
+fieldset {
+  border: none;
+}
+fieldset legend {
+  text-align: center;
+}
+.c-switch {
+  --baseSize: 12px;
+  --checkedBgColor: #333;
+}
+.c-switch__wrapper {
+  font-size: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  width: 4em;
+  height: 2em;
+  border-radius: 3.5em;
+  border: 1px solid #ddd;
+  position: relative;
+}
+.c-switch label {
+  font-size: calc(var(--baseSize) * 1.75);
+  cursor: pointer;
+  margin: 0 0.5em;
+}
+.c-switch input {
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  position: relative;
+  margin-right: -2px;
+  z-index: 1;
+  cursor: pointer;
+  opacity: 0;
+}
+.c-switch input:disabled ~ .c-switch__toggler {
+  opacity: 0.4;
+}
+.c-switch input:focus ~ .c-switch__toggler {
+  top: -2px;
+  border: 3px solid var(--clr-dark-pink);
+}
+.c-switch input:nth-of-type(2):checked ~ .c-switch__background {
+  background-color: var(--checkedBgColor);
+}
+.c-switch input:nth-of-type(2):checked ~ .c-switch__toggler {
+  right: 0;
+  left: 50%;
+}
+.c-switch__background {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  border-radius: 3.5em;
+  background-color: var(--clr-white-1);
+  transition: all 0.1s ease-out;
+}
+.c-switch__toggler {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 100%;
+  width: 50%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: var(--clr-pink);
+  z-index: 2;
+  transition: all 0.1s ease-out;
+  box-sizing: content-box;
+}

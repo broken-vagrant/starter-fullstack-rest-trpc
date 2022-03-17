@@ -1,0 +1,15 @@
+.button {
+  font-size: 2rem;
+  min-height: 50px;
+  padding: 0.3rem 0.5rem;
+  background: none;
+  border: 0;
+  outline-color: var(--clr-pink);
+  cursor: pointer;
+}
+.button:hover {
+  color: var(--clr-pink);
+}
+.button:active {
+  transform: scale(0.8);
+}

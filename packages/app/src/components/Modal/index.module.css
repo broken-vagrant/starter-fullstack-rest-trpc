@@ -1,0 +1,40 @@
+.modal {
+  position: fixed;
+  z-index: 1300;
+  inset: 0;
+}
+.backdrop {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  inset: 0;
+  background: var(--clr-backdrop);
+  z-index: 1;
+  -webkit-tap-highlight-color: transparent;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.backdrop.mounted {
+  opacity: 1;
+}
+.children__outer {
+  height: 100%;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.children__container {
+  position: relative;
+  max-height: calc(100% - 2rem);
+  border-radius: var(--rounded-sm);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 1440px;
+  background-color: var(--clr-white);
+  color: var(--clr-black);
+  margin: 2rem;
+  padding: 0.5rem 1.5rem;
+}

@@ -1,0 +1,35 @@
+{
+  "name": "starter",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "precommit": "lint-staged",
+    "postinstall": "husky install",
+    "app": "pnpm -F ./packages/app --",
+    "api": "pnpm -F ./packages/api --"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.21",
+    "@typescript-eslint/eslint-plugin": "5.13.0",
+    "@typescript-eslint/parser": "5.13.0",
+    "concurrently": "7.0.0",
+    "dotenv-cli": "^5.0.0",
+    "eslint": "8.10.0",
+    "husky": "7.0.4",
+    "lint-staged": "12.3.4",
+    "prettier": "2.5.1",
+    "ts-node": "^10.7.0",
+    "typescript": "4.6.2"
+  },
+  "lint-staged": {
+    "./**/*.{js,jsx,ts,tsx,json,md,css,scss}": [
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": "16.x",
+    "pnpm": "6.x"
+  },
+  "packageManager": "pnpm@6.0.0"
+}

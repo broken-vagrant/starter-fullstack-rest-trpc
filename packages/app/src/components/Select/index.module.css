@@ -1,0 +1,59 @@
+.form__field {
+  position: relative;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+.form__field label {
+  color: var(--clr-text);
+  margin-right: 0.5em;
+}
+.field-select {
+  position: relative;
+  width: 100%;
+}
+.field-select select {
+  appearance: none;
+  border-radius: 4px;
+  color: var(--clr-text);
+  background-color: var(--clr-elements);
+  min-height: calc(1em + 26px);
+  min-width: 100px;
+  padding-left: 0.5em;
+  border: 0;
+  outline: 0;
+  box-shadow: var(--shadow-elevation-medium);
+}
+.field-select::after {
+  border-bottom: 2px solid var(--clr-text);
+  border-right: 2px solid var(--clr-text);
+  content: "";
+  display: block;
+  height: 8px;
+  width: 8px;
+  pointer-events: none;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translate(0, -65%) rotate(45deg);
+}
+.field-select fieldset {
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
+  pointer-events: none;
+  border: 2px solid;
+  border-color: transparent;
+}
+.field-select select:focus ~ fieldset {
+  border-color: var(--clr-pink);
+}
+
+.field-select:hover > fieldset {
+  border-color: var(--clr-pink);
+}
+/* @media (max-width: 640px) {
+  .form__field {
+    font-size: 0.9rem;
+  }
+} */
