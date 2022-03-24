@@ -1,9 +1,9 @@
 // source: https://gist.github.com/ziluvatar/a3feb505c4c0ec37059054537b38fc48
-import jwt, { Secret, SignOptions, VerifyOptions } from "jsonwebtoken";
-import { JWT_SECRET, JWT_TOKEN_EXPIRES_IN } from "../constants";
+import jwt, { Secret, SignOptions, VerifyOptions } from 'jsonwebtoken';
+import { JWT_SECRET, JWT_TOKEN_EXPIRES_IN } from '../constants';
 
 interface RefreshOptions {
-  verify?: Exclude<VerifyOptions, "jwtid">;
+  verify?: Exclude<VerifyOptions, 'jwtid'>;
   jwtid?: string;
 }
 interface JWTParams {
@@ -19,7 +19,7 @@ class TokenGenerator {
   constructor(secret: Secret, options: SignOptions) {
     this.secret = secret;
     if (!options.expiresIn) {
-      throw new Error("Token Expiration Time is not provided");
+      throw new Error('Token Expiration Time is not provided');
     }
     this.options = options;
   }
@@ -37,8 +37,8 @@ class TokenGenerator {
       this.secret,
       refreshOptions?.verify || {}
     );
-    if (typeof verified !== "string") {
-      if ("payload" in verified) {
+    if (typeof verified !== 'string') {
+      if ('payload' in verified) {
         delete verified.payload.iat;
         delete verified.payload.exp;
         delete verified.payload.nbf;
@@ -58,9 +58,9 @@ class TokenGenerator {
   }
   signWithClaims(params: JWTParams) {
     const payload = {
-      "https://hasura.io/jwt/claims": {
-        "x-hasura-allowed-roles": params.allowedRoles,
-        "x-hasura-default-role": params.defaultRole,
+      'https://hasura.io/jwt/claims': {
+        'x-hasura-allowed-roles': params.allowedRoles,
+        'x-hasura-default-role': params.defaultRole,
         ...params.otherClaims,
       },
     };
@@ -70,8 +70,8 @@ class TokenGenerator {
   }
 }
 
-const tokenGenerator = new TokenGenerator(Buffer.from(JWT_SECRET, "base64"), {
-  algorithm: "HS256",
+const tokenGenerator = new TokenGenerator(Buffer.from(JWT_SECRET, 'base64'), {
+  algorithm: 'HS256',
   noTimestamp: false,
   expiresIn: JWT_TOKEN_EXPIRES_IN,
 });

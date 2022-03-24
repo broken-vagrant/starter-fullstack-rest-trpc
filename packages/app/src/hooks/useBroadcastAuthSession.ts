@@ -1,6 +1,6 @@
-import { sessionChannel, SessionChannelActions } from "~/lib/broadcast";
-import { useCallback, useEffect } from "react";
-import { QueryClient } from "react-query";
+import { sessionChannel, SessionChannelActions } from '~/lib/broadcast';
+import { useCallback, useEffect } from 'react';
+import { QueryClient } from 'react-query';
 
 const useBroadcastAuthSession = ({
   queryClient,
@@ -13,34 +13,34 @@ const useBroadcastAuthSession = ({
         console.log({ msg });
 
         switch (msg.type) {
-          case "new-user":
+          case 'new-user':
             sessionChannel.postMessage({
-              type: "session-data",
+              type: 'session-data',
               payload: JSON.stringify(sessionStorage),
             });
             break;
-          case "session-data":
+          case 'session-data':
             try {
               if (msg.payload) {
                 const data = JSON.parse(msg.payload);
                 for (const key in data) {
                   sessionStorage.setItem(key, data[key]);
                 }
-                await queryClient.invalidateQueries(["WhoAmI"]);
+                await queryClient.invalidateQueries(['WhoAmI']);
               }
             } catch (err) {
               console.error(err);
             }
             break;
-          case "set-jwt":
-            sessionStorage.setItem("jwt", msg.payload);
-            await queryClient.invalidateQueries(["WhoAmI"]);
+          case 'set-jwt':
+            sessionStorage.setItem('jwt', msg.payload);
+            await queryClient.invalidateQueries(['WhoAmI']);
             break;
-          case "set-refreshToken":
-            sessionStorage.setItem("refreshToken", msg.payload);
-            await queryClient.invalidateQueries(["WhoAmI"]);
+          case 'set-refreshToken':
+            sessionStorage.setItem('refreshToken', msg.payload);
+            await queryClient.invalidateQueries(['WhoAmI']);
             break;
-          case "logout":
+          case 'logout':
             sessionStorage.clear();
             break;
           default:
@@ -51,16 +51,16 @@ const useBroadcastAuthSession = ({
     [queryClient]
   );
   useEffect(() => {
-    sessionChannel.addEventListener("message", handleChannel);
+    sessionChannel.addEventListener('message', handleChannel);
 
     if (!sessionStorage.length) {
       sessionChannel.postMessage({
-        type: "new-user",
+        type: 'new-user',
       });
     }
 
     return () => {
-      sessionChannel.removeEventListener("message", handleChannel);
+      sessionChannel.removeEventListener('message', handleChannel);
     };
   }, []);
 };

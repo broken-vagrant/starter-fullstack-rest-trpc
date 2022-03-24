@@ -1,11 +1,11 @@
-import "virtual:windi.css";
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
+import 'virtual:windi.css';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
 
-import reportWebVitals from "./reportWebVitals";
-import AppProvider from "./lib/providers";
+import reportWebVitals from './reportWebVitals';
+import AppProvider from './lib/providers';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -13,7 +13,7 @@ ReactDOM.render(
       <App />
     </AppProvider>
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

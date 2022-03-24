@@ -1,21 +1,21 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from 'react-router-dom';
 
 const ErrorPage = () => {
   const { pathname } = useLocation();
   return (
     <div className="pt-16 w-[75%] mx-auto text-center rounded-lg bg-light-text-amber-50">
       <p>
-        There was an error in loading this page.{" "}
+        There was an error in loading this page.{' '}
         <span
-          style={{ cursor: "pointer", color: "#0077FF" }}
+          style={{ cursor: 'pointer', color: '#0077FF' }}
           onClick={() => {
             window.location.reload();
           }}
         >
           Reload this page
-        </span>{" "}
+        </span>{' '}
       </p>
-      {pathname !== "/" && (
+      {pathname !== '/' && (
         <Link to="/" className="hover:underline">
           Back Home
         </Link>

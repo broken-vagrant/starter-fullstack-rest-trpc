@@ -5,10 +5,10 @@ import {
   RefObject,
   useEffect,
   useState,
-} from "react";
-import ReactDOM from "react-dom";
-import defaultStyles from "./index.module.css";
-import useModal from "../../hooks/useModal";
+} from 'react';
+import ReactDOM from 'react-dom';
+import defaultStyles from './index.module.css';
+import useModal from '../../hooks/useModal';
 
 interface ModalProps extends HTMLAttributes<HTMLDivElement> {
   focusFirst?: string | RefObject<HTMLElement> | HTMLElement;
@@ -54,24 +54,24 @@ const Modal = ({
   const modal = (
     <div
       role="presentation"
-      className={`${defaultStyles.modal} ${classes ? classes?.root : ""}`}
+      className={`${defaultStyles.modal} ${classes ? classes?.root : ''}`}
     >
       <div
         className={`${defaultStyles.backdrop} ${
-          isMounted ? defaultStyles.mounted : ""
-        } ${classes ? classes?.backDrop : ""}`}
+          isMounted ? defaultStyles.mounted : ''
+        } ${classes ? classes?.backDrop : ''}`}
       >
         <div tabIndex={0}></div>
         <div
           role="presentation"
           tabIndex={-1}
           className={`${defaultStyles.children__outer} ${
-            classes?.childrenOuter ? classes.childrenOuter : ""
+            classes?.childrenOuter ? classes.childrenOuter : ''
           }`}
         >
           <div
             className={`${defaultStyles.children__container} ${
-              classes?.childrenContainer ? classes.childrenContainer : ""
+              classes?.childrenContainer ? classes.childrenContainer : ''
             }`}
             ref={ref}
             role="dialog"

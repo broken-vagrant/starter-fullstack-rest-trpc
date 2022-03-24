@@ -1,9 +1,9 @@
-import { setJwtToken, setRefreshToken } from "~/utils/jwt";
-import { useLoginMutation, useWhoAmIQuery } from "~/__generated__/graphqlTypes";
-import { useState } from "react";
-import { useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { setJwtToken, setRefreshToken } from '~/utils/jwt';
+import { useLoginMutation, useWhoAmIQuery } from '~/__generated__/graphqlTypes';
+import { useState } from 'react';
+import { useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function App() {
   // GraphQL API
@@ -11,13 +11,13 @@ function App() {
   useWhoAmIQuery(undefined, {
     onSuccess: (data) => {
       if (data.whoami) {
-        navigate("/");
+        navigate('/');
       }
     },
   });
   const client = useQueryClient();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const { mutate, error, isLoading } = useLoginMutation<Error>({
     onSuccess: async (data) => {
       if (data.login) {
@@ -26,9 +26,9 @@ function App() {
         setRefreshToken(data.login?.refreshToken as string);
 
         // refresh WhoAmI query after setting tokens
-        await client.invalidateQueries(["WhoAmI"]);
+        await client.invalidateQueries(['WhoAmI']);
 
-        navigate("/");
+        navigate('/');
       }
     },
   });
@@ -46,7 +46,7 @@ function App() {
       <form onSubmit={handleSubmit} className="my-8">
         {error && (
           <div className="error">
-            {error.message || "Something went wrong!"}
+            {error.message || 'Something went wrong!'}
           </div>
         )}
         <div>
@@ -74,7 +74,7 @@ function App() {
           />
         </div>
         <button type="submit" className="teal-btn mt-8">
-          {isLoading ? "logging in..." : "Login"}
+          {isLoading ? 'logging in...' : 'Login'}
         </button>
       </form>
       <div>

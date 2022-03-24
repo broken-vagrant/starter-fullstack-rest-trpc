@@ -1,10 +1,10 @@
-import { expect, it } from "vitest";
+import { expect, it } from 'vitest';
 
-import AppProvider from "@/lib/providers";
-import { render, screen, userEvent } from "@/utils/test-utils";
-import App from "@/App";
+import AppProvider from '@/lib/providers';
+import { render, screen, userEvent } from '@/utils/test-utils';
+import App from '@/App';
 
-it("Should signup", async () => {
+it('Should signup', async () => {
   render(
     <AppProvider>
       <App basename="/" />
@@ -12,24 +12,24 @@ it("Should signup", async () => {
   );
 
   expect(
-    screen.getByRole("heading", {
-      name: "Auth Demo",
+    screen.getByRole('heading', {
+      name: 'Auth Demo',
       level: 1,
     })
   ).toBeDefined();
 
   expect(
-    screen.getByRole("heading", {
-      name: "Login",
+    screen.getByRole('heading', {
+      name: 'Login',
       level: 2,
     })
   ).toBeDefined();
 
-  userEvent.click(screen.getByRole("link", { name: "Sign up" }));
+  userEvent.click(screen.getByRole('link', { name: 'Sign up' }));
 
   expect(
-    screen.getByRole("heading", {
-      name: "SignUp",
+    screen.getByRole('heading', {
+      name: 'SignUp',
       level: 2,
     })
   ).toBeDefined();

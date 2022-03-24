@@ -1,4 +1,4 @@
-import { BubbleLoading } from "./Icons";
+import { BubbleLoading } from './Icons';
 
 const LoadingSpinner = () => {
   return (

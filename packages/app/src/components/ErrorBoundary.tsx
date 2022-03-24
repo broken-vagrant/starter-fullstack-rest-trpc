@@ -1,5 +1,5 @@
-import React, { ErrorInfo } from "react";
-import ErrorPage from "../pages/Error";
+import React, { ErrorInfo } from 'react';
+import ErrorPage from '../pages/Error';
 
 class ErrorBoundary extends React.Component {
   state = {

@@ -1,40 +1,40 @@
-import "dotenv/config";
+import 'dotenv/config';
 import {
   FINGERPRINT_COOKIE_MAX_AGE,
   FINGERPRINT_COOKIE_NAME,
   IS_PROD,
   JWT_TOKEN_EXPIRES_IN,
-} from "../constants";
-import { serialize } from "cookie";
-import crypto from "crypto";
-import { Response } from "express";
-import { promisify } from "util";
-import tokenGenerator from "../libs/TokenGenerator";
+} from '../constants';
+import { serialize } from 'cookie';
+import crypto from 'crypto';
+import { Response } from 'express';
+import { promisify } from 'util';
+import tokenGenerator from '../libs/TokenGenerator';
 
 const scrypt = promisify(crypto.scrypt);
 
 export async function hashPassword(password: string) {
-  const salt = crypto.randomBytes(8).toString("hex");
+  const salt = crypto.randomBytes(8).toString('hex');
   const derivedKey = (await scrypt(password, salt, 64)) as Buffer;
-  return salt + ":" + derivedKey.toString("hex");
+  return salt + ':' + derivedKey.toString('hex');
 }
 
 export async function checkPassword(
   plaintextPassword: string,
   hashedPassword: string
 ) {
-  const [salt, key] = hashedPassword.split(":");
+  const [salt, key] = hashedPassword.split(':');
   const derivedKey = (await scrypt(
     plaintextPassword,
     salt,
     64
   )) as NodeJS.ArrayBufferView;
 
-  return crypto.timingSafeEqual(Buffer.from(key, "hex"), derivedKey);
+  return crypto.timingSafeEqual(Buffer.from(key, 'hex'), derivedKey);
 }
 
 export function sha256(value: string) {
-  return crypto.createHash("sha256").update(value, "utf8").digest("hex");
+  return crypto.createHash('sha256').update(value, 'utf8').digest('hex');
 }
 
 export function uuidv4(): string {
@@ -58,23 +58,23 @@ export function setFingerprintCookieAndSignJwt(
   user: { id: number }
 ) {
   res.setHeader(
-    "Set-Cookie",
+    'Set-Cookie',
     serialize(FINGERPRINT_COOKIE_NAME, fingerprint, {
-      path: "/",
+      path: '/',
       maxAge: FINGERPRINT_COOKIE_MAX_AGE,
       httpOnly: true,
       secure: IS_PROD,
-      sameSite: IS_PROD ? "none" : "lax",
+      sameSite: IS_PROD ? 'none' : 'lax',
     })
   );
 
   return tokenGenerator.signWithClaims({
-    allowedRoles: ["user"],
-    defaultRole: "user",
+    allowedRoles: ['user'],
+    defaultRole: 'user',
     expiresIn: JWT_TOKEN_EXPIRES_IN,
     otherClaims: {
-      "X-Hasura-User-Id": String(user.id),
-      "X-User-Fingerprint": sha256(fingerprint),
+      'X-Hasura-User-Id': String(user.id),
+      'X-User-Fingerprint': sha256(fingerprint),
     },
   });
 }

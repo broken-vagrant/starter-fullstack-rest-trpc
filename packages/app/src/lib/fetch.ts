@@ -1,12 +1,12 @@
-import decodeJWT, { JwtPayload } from "jwt-decode";
+import decodeJWT, { JwtPayload } from 'jwt-decode';
 import {
   getJwtToken,
   getRefreshToken,
   removeJwtTokens,
   setJwtToken,
-} from "@/utils/jwt";
+} from '@/utils/jwt';
 
-export const endpointUrl = import.meta.env["VITE_BACKEND_URL"];
+export const endpointUrl = import.meta.env['VITE_BACKEND_URL'];
 
 class TokenRefresher {
   retryCount: number;
@@ -17,7 +17,7 @@ class TokenRefresher {
   }
 
   isTokenValidOrUndefined() {
-    console.log("isTokenValidOrUndefined");
+    console.log('isTokenValidOrUndefined');
     const token = getJwtToken();
 
     // If there is no token, the user is not logged in
@@ -37,20 +37,20 @@ class TokenRefresher {
   }
   async fetch() {
     try {
-      const jwt: any = decodeJWT(getJwtToken() || "");
-      console.log("fetchAccessToken jwt:", jwt);
+      const jwt: any = decodeJWT(getJwtToken() || '');
+      console.log('fetchAccessToken jwt:', jwt);
 
       const refreshToken = getRefreshToken();
       const fingerPrintHash =
-        jwt?.["https://hasura.io/jwt/claims"]?.["X-User-Fingerprint"];
+        jwt?.['https://hasura.io/jwt/claims']?.['X-User-Fingerprint'];
 
-      const request = await fetch(import.meta.env["VITE_BACKEND_URL"], {
-        method: "POST",
+      const request = await fetch(import.meta.env['VITE_BACKEND_URL'], {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         // credentials: "include" is REQUIRED for cookies to work
-        credentials: "include",
+        credentials: 'include',
         body: JSON.stringify({
           query: `
                   mutation RefreshJwtToken($data: RefreshTokenInput!) {
@@ -77,7 +77,7 @@ class TokenRefresher {
         removeJwtTokens();
       }
     } catch (err) {
-      console.warn("Your refresh token is invalid. Try to reauthenticate.");
+      console.warn('Your refresh token is invalid. Try to reauthenticate.');
       removeJwtTokens();
     }
   }
@@ -98,8 +98,8 @@ function getHeaders() {
   const headers: HeadersInit = {};
   const token = getJwtToken();
 
-  if (token) headers["authorization"] = `Bearer ${token}`;
-  headers["content-type"] = "application/json";
+  if (token) headers['authorization'] = `Bearer ${token}`;
+  headers['content-type'] = 'application/json';
   return headers;
 }
 const tokenRefresher = new TokenRefresher(1);
@@ -112,7 +112,7 @@ export const fetchParams = async (): Promise<RequestInit> => {
 
   return {
     // credentials: "include" is REQUIRED for cookies to work
-    credentials: "include",
+    credentials: 'include',
     headers: {
       ...getHeaders(),
     },
@@ -125,7 +125,7 @@ export function fetcher<TData, TVariables>(
 ) {
   return async (): Promise<TData> => {
     const res = await fetch(endpointUrl as string, {
-      method: "POST",
+      method: 'POST',
       ...(await fetchParams()),
       body: JSON.stringify({ query, variables }),
     });
@@ -134,8 +134,8 @@ export function fetcher<TData, TVariables>(
 
     if (json.errors) {
       const { message, extensions } = json.errors[0];
-      if (extensions && extensions.code === "INTERNAL_SERVER_ERROR") {
-        throw new Error("Something went wrong!");
+      if (extensions && extensions.code === 'INTERNAL_SERVER_ERROR') {
+        throw new Error('Something went wrong!');
       }
       throw new Error(message);
     }

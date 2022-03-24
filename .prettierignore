@@ -9,3 +9,8 @@ __generated__
 
 .yarn
 node_modules/
+
+*-lock
+.*.js
+.husky
+.github

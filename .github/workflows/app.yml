@@ -4,10 +4,10 @@ on:
   push:
     branches: [main, renovate/**]
     paths:
-      - "packages/app/**"
+      - 'packages/app/**'
   pull_request:
     paths:
-      - "packages/app/**"
+      - 'packages/app/**'
     branches: [main]
 
 jobs:

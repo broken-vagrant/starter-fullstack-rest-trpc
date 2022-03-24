@@ -1,5 +1,5 @@
-import create from "zustand";
-import createUserSlice, { UserSlice } from "./userSlice";
+import create from 'zustand';
+import createUserSlice, { UserSlice } from './userSlice';
 
 export type AppState = UserSlice;
 

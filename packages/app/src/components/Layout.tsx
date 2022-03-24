@@ -1,13 +1,13 @@
-import { sessionChannel } from "~/lib/broadcast";
-import { setJwtToken, setRefreshToken } from "~/utils/jwt";
+import { sessionChannel } from '~/lib/broadcast';
+import { setJwtToken, setRefreshToken } from '~/utils/jwt';
 import {
   useLogoutMutation,
   useWhoAmIQuery,
-} from "@/__generated__/graphqlTypes";
-import { ReactNode } from "react";
-import { useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+} from '@/__generated__/graphqlTypes';
+import { ReactNode } from 'react';
+import { useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { data } = useWhoAmIQuery(undefined, {
@@ -18,16 +18,16 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const { mutate } = useLogoutMutation({
     onSuccess: () => {
       try {
-        setJwtToken("");
-        setRefreshToken("");
+        setJwtToken('');
+        setRefreshToken('');
         client.clear();
         sessionStorage.clear();
-        sessionChannel.postMessage({ type: "logout" });
-        navigate("/");
+        sessionChannel.postMessage({ type: 'logout' });
+        navigate('/');
       } catch (err) {
         console.error(err);
       } finally {
-        navigate("/");
+        navigate('/');
       }
     },
   });
@@ -45,7 +45,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
         </Link>
         <div className="flex items-center">
           <div>
-            Profile: <strong>{data?.whoami?.name || "Guest"}</strong>
+            Profile: <strong>{data?.whoami?.name || 'Guest'}</strong>
           </div>
           {data?.whoami?.name && (
             <button onClick={handleLogout} className="ml-4 teal-btn">

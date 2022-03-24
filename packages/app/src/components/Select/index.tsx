@@ -1,9 +1,9 @@
-import classes from "./index.module.css";
-import React from "react";
-import { ComponentPropsWithRef } from "react";
-import { generateLabelId } from "../utils";
+import classes from './index.module.css';
+import React from 'react';
+import { ComponentPropsWithRef } from 'react';
+import { generateLabelId } from '../utils';
 
-interface SelectProps extends ComponentPropsWithRef<"select"> {
+interface SelectProps extends ComponentPropsWithRef<'select'> {
   label: string;
   options: Array<number | string | readonly string[]>;
   classes?: {
@@ -21,7 +21,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(function Select(
   return (
     <div className={classes.form__field}>
       <label htmlFor={labelId}>{label}</label>
-      <div className={classes["field-select"]}>
+      <div className={classes['field-select']}>
         <select id={labelId} {...rest} ref={ref}>
           {options.map((item) => (
             <option value={item} key={item.toString()}>

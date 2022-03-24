@@ -1,11 +1,11 @@
-import { setJwtToken, setRefreshToken } from "~/utils/jwt";
+import { setJwtToken, setRefreshToken } from '~/utils/jwt';
 import {
   useSignUpMutation,
   useWhoAmIQuery,
-} from "~/__generated__/graphqlTypes";
-import { useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+} from '~/__generated__/graphqlTypes';
+import { useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const SignUpPage = () => {
   useWhoAmIQuery(undefined, {
     onSuccess: (data) => {
       if (data?.whoami) {
-        navigate("/");
+        navigate('/');
       }
     },
   });
@@ -25,9 +25,9 @@ const SignUpPage = () => {
       setRefreshToken(data.signupUser.refreshToken);
 
       // refresh WhoAmI query after setting tokens
-      await client.invalidateQueries(["WhoAmI"]);
+      await client.invalidateQueries(['WhoAmI']);
 
-      navigate("/");
+      navigate('/');
     },
   });
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -47,7 +47,7 @@ const SignUpPage = () => {
       <form onSubmit={handleSubmit} className="my-8">
         {error && (
           <div className="mt-8 error">
-            {error.message || "Something went wrong!"}
+            {error.message || 'Something went wrong!'}
           </div>
         )}
         <div>

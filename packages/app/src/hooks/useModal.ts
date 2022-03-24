@@ -1,11 +1,11 @@
-import { RefObject, useEffect, useRef } from "react";
+import { RefObject, useEffect, useRef } from 'react';
 
 const getDOMRef = (
   value: string | RefObject<HTMLElement> | HTMLElement
 ): HTMLElement | null => {
-  if (typeof value == "string") {
+  if (typeof value == 'string') {
     return document.querySelector(value);
-  } else if (typeof value == "object") {
+  } else if (typeof value == 'object') {
     if (value instanceof HTMLElement) return value;
     if (value.current) return value.current;
   }
@@ -26,10 +26,10 @@ const useModal = <RefType extends HTMLElement>({
   autoFocus,
   overlayModal = true,
 }: UseModalProps) => {
-  let modalRoot = document.getElementById("modal-root");
+  let modalRoot = document.getElementById('modal-root');
   if (!modalRoot) {
-    modalRoot = document.createElement("div");
-    modalRoot.setAttribute("id", "modal-root");
+    modalRoot = document.createElement('div');
+    modalRoot.setAttribute('id', 'modal-root');
     document.body.appendChild(modalRoot);
   }
 
@@ -51,28 +51,28 @@ const useModal = <RefType extends HTMLElement>({
     }
 
     function handleKeyPress(e: KeyboardEvent) {
-      if (e.key === "Escape") {
+      if (e.key === 'Escape') {
         onClose();
         if (_focusAfterClosed) _focusAfterClosed.focus();
       }
     }
-    document.body.addEventListener("keyup", handleKeyPress);
-    document.body.addEventListener("click", handleOutsideClick, {
+    document.body.addEventListener('keyup', handleKeyPress);
+    document.body.addEventListener('click', handleOutsideClick, {
       capture: true,
     });
 
     return () => {
-      document.body.removeEventListener("click", handleOutsideClick, {
+      document.body.removeEventListener('click', handleOutsideClick, {
         capture: true,
       });
-      document.body.removeEventListener("keyup", handleKeyPress);
+      document.body.removeEventListener('keyup', handleKeyPress);
     };
   }, [onClose, _focusAfterClosed]);
 
   // attach focus event handlers to handle tabbing and what to focus on open/close modal
   useEffect(() => {
     const isFocusable = (element: HTMLElement): element is HTMLElement => {
-      return typeof element.focus === "function";
+      return typeof element.focus === 'function';
     };
 
     // `focus` event can be triggered by keyboard(user input),javascript
@@ -132,7 +132,7 @@ const useModal = <RefType extends HTMLElement>({
       }
 
       if (!ref.current) {
-        console.error("dialog not found");
+        console.error('dialog not found');
         return;
       }
       if (ref.current.contains(e.target as HTMLElement)) {
@@ -151,15 +151,15 @@ const useModal = <RefType extends HTMLElement>({
     };
 
     if (overlayModal) {
-      document.body.classList.add("has-dialog");
+      document.body.classList.add('has-dialog');
     }
-    document.addEventListener("focus", trapFocus, true);
+    document.addEventListener('focus', trapFocus, true);
 
     return () => {
       if (overlayModal) {
-        document.body.classList.remove("has-dialog");
+        document.body.classList.remove('has-dialog');
       }
-      document.removeEventListener("focus", trapFocus, true);
+      document.removeEventListener('focus', trapFocus, true);
 
       if (_focusAfterClosed) {
         _focusAfterClosed.focus();
