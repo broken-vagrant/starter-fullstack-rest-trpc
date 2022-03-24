@@ -4,6 +4,10 @@
 
 1. `Node >=v14`
 
+## Recommended
+
+1. [mysql vscode extension](https://marketplace.visualstudio.com/items?itemName=cweijan.vscode-mysql-client2&ssr=false#review-details)
+
 ## Available Scripts
 
 ### Init
@@ -16,13 +20,13 @@ pnpm app msw:init
 ### [api](./packages/api)
 
 ```sh
-# start docker (to mongo container)
+# start docker (mysql)
 pnpm api db-up
 pnpm api dev
 pnpm api test
 pnpm api build
 pnpm api start
-# don't forget to stop mongo
+# don't forget to stop mysql
 pnpm api db-down
 ```
 

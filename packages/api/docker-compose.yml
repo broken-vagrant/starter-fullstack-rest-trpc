@@ -1,3 +1,4 @@
+# use root/my-password as username/password
 version: "3.6"
 services:
   mysql:
@@ -8,6 +9,6 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: my-password
 volumes:
   db_data:
