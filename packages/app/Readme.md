@@ -7,12 +7,12 @@
 ## Usage
 
 ```sh
-yarn run dev
-yarn run build
-yarn run preview
-yarn run test # run with vitest
-yarn run coverage # run with vitest
+pnpm run dev
+pnpm run build
+pnpm run preview
+pnpm run test
+pnpm run coverage
 
 # setup mswjs for browser
-yarn app msw:init
+pnpm run msw:init
 ```

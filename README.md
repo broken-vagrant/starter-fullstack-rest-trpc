@@ -19,6 +19,8 @@ pnpm app msw:init
 
 ### [api](./packages/api)
 
+If you want to avoid docker setup ,use sqlite (check prisma docs)
+
 ```sh
 # start docker (mysql)
 pnpm api db-up

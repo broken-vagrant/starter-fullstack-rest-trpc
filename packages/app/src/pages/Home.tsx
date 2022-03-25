@@ -1,22 +1,20 @@
 import LoadingSpinner from '~/components/LoadingSpinner';
-import {
-  useGetAllUsersQuery,
-  useWhoAmIQuery,
-} from '~/__generated__/graphqlTypes';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { trpc } from '~/utils/trpc';
 
 const LoadUsers = () => {
-  const [triggerQuery, setTriggerQuery] = useState(false);
-  const { data, error, isLoading } = useGetAllUsersQuery(undefined, {
-    enabled: triggerQuery,
-    onError: (err: Error) => {
+  const [enabled, setEnabled] = useState(false);
+  // FIX:
+  const { data, error, isLoading } = trpc.useQuery([''], {
+    enabled: enabled,
+    onError: (err) => {
       console.error(err);
     },
   });
   const getAllUsers = () => {
-    if (!triggerQuery) {
-      setTriggerQuery(true);
+    if (!enabled) {
+      setEnabled(true);
     }
   };
   return (

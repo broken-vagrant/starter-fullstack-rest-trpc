@@ -2,15 +2,13 @@ import decodeJWT, { JwtPayload } from 'jwt-decode';
 import {
   getJwtToken,
   getRefreshToken,
-  removeJwtTokens,
   setJwtToken,
-} from '@/utils/jwt';
+  removeJwtTokens,
+} from '~/utils/jwt';
 
-export const endpointUrl = import.meta.env['VITE_BACKEND_URL'];
-
-class TokenRefresher {
-  retryCount: number;
-  currRetryCount: number;
+export default class TokenRefresher {
+  private retryCount: number;
+  private currRetryCount: number;
   constructor(retryCount: number) {
     this.retryCount = retryCount;
     this.currRetryCount = 0;
@@ -35,7 +33,7 @@ class TokenRefresher {
     // Return true if the token is still valid, otherwise false and trigger a token refresh
     return isValid;
   }
-  async fetch() {
+  private async fetchToken() {
     try {
       const jwt: any = decodeJWT(getJwtToken() || '');
       console.log('fetchAccessToken jwt:', jwt);
@@ -82,64 +80,12 @@ class TokenRefresher {
     }
   }
   async refresh() {
-    if (this.retryCount === this.currRetryCount) {
+    if (this.currRetryCount >= this.retryCount) {
       return;
     }
     if (!this.isTokenValidOrUndefined()) {
       this.currRetryCount += 1;
-      await this.fetch();
+      await this.fetchToken();
     }
   }
-}
-function getHeaders() {
-  /**
-   * set fetcher's default headers in this function
-   */
-  const headers: HeadersInit = {};
-  const token = getJwtToken();
-
-  if (token) headers['authorization'] = `Bearer ${token}`;
-  headers['content-type'] = 'application/json';
-  return headers;
-}
-const tokenRefresher = new TokenRefresher(1);
-
-export const fetchParams = async (): Promise<RequestInit> => {
-  // info: set default fetch request params in return {...params}
-
-  // refresh token
-  await tokenRefresher.refresh();
-
-  return {
-    // credentials: "include" is REQUIRED for cookies to work
-    credentials: 'include',
-    headers: {
-      ...getHeaders(),
-    },
-  };
-};
-
-export function fetcher<TData, TVariables>(
-  query: string,
-  variables?: TVariables
-) {
-  return async (): Promise<TData> => {
-    const res = await fetch(endpointUrl as string, {
-      method: 'POST',
-      ...(await fetchParams()),
-      body: JSON.stringify({ query, variables }),
-    });
-
-    const json = await res.json();
-
-    if (json.errors) {
-      const { message, extensions } = json.errors[0];
-      if (extensions && extensions.code === 'INTERNAL_SERVER_ERROR') {
-        throw new Error('Something went wrong!');
-      }
-      throw new Error(message);
-    }
-
-    return json.data;
-  };
 }
