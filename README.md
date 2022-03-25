@@ -14,7 +14,7 @@
 
 ```sh
 # setup mswjs for browser
-pnpm app msw:init
+pnpm web msw:init
 ```
 
 ### [api](./packages/api)
@@ -32,12 +32,12 @@ pnpm api start
 pnpm api db-down
 ```
 
-### [App](./packages/app)
+### [web](./packages/web)
 
 ```sh
-pnpm app preview
-pnpm app test
-pnpm app dev
+pnpm web preview
+pnpm web test
+pnpm web dev
 # deploy to gh-pages
-pnpm app deploy
+pnpm web deploy
 ```
