@@ -26,25 +26,25 @@ export const UserUniqueInput = z.object({
 });
 
 export const UserCreateWhereInput = z.object({
-  data: z.object({
-    name: z.string(),
-    email: z.string().email(),
-    password: z.string().min(6).max(10),
-  }),
+  name: z.string(),
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(6, { message: 'password length must be be 6 chars long' })
+    .max(10, {
+      message:
+        'password length must be greater than 6 chars and less than 10 chars',
+    }),
 });
 
 export const UserLoginWhereInput = z.object({
-  data: z.object({
-    email: z.string().email(),
-    password: z.string().min(6).max(10),
-  }),
+  email: z.string().email(),
+  password: z.string(),
 });
 
 export const RefreshTokenInput = z.object({
-  data: z.object({
-    refreshToken: z.string(),
-    fingerPrintHash: z.string(),
-  }),
+  refreshToken: z.string(),
+  fingerPrintHash: z.string(),
 });
 
 export const userRouter = createRouter()
@@ -82,22 +82,18 @@ export const userRouter = createRouter()
   .mutation('signUp', {
     input: UserCreateWhereInput,
     async resolve({ ctx, input }) {
-      console.log({
-        req: ctx.req,
-      });
-
       const user = await ctx.prisma.user.findFirst({
         where: {
-          email: input.data.email,
+          email: input.email,
         },
       });
       if (user) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: `User with Email: ${input.data.email} already Exists`,
+          message: `User with Email: ${input.email} already Exists`,
         });
       }
-      const { email, name, password } = input.data;
+      const { email, name, password } = input;
 
       const refreshToken = uuidv4();
 
@@ -141,7 +137,7 @@ export const userRouter = createRouter()
   .mutation('login', {
     input: UserLoginWhereInput,
     async resolve({ ctx, input }) {
-      const { email, password } = input.data;
+      const { email, password } = input;
       const user = await ctx.prisma.user.findFirst({
         where: {
           email,
@@ -192,7 +188,7 @@ export const userRouter = createRouter()
   .mutation('refreshToken', {
     input: RefreshTokenInput,
     async resolve({ ctx, input }) {
-      const { refreshToken, fingerPrintHash } = input.data;
+      const { refreshToken, fingerPrintHash } = input;
 
       const fingerprintCookie = getCookie(
         ctx.req.headers.cookie,

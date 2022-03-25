@@ -18,6 +18,7 @@
   },
   "scripts": {
     "dev": "dotenv -e .env.development ts-node-dev --no-notify --respawn --transpile-only -r tsconfig-paths/register src/index",
+    "dev1": "nodemon --watch src src/index.ts",
     "start": "node dist/index",
     "lint:fix": "tsc --noEmit && eslint  --quiet --fix --ignore-path .gitignore",
     "test": "dotenv -e .env.test jest",

@@ -5,10 +5,8 @@ import { Id } from './zod-utils';
 import { defaultUserSelect, UserUniqueInput } from './user';
 
 const PostCreateInput = z.object({
-  data: z.object({
-    title: z.string(),
-    content: z.string(),
-  }),
+  title: z.string(),
+  content: z.string(),
   authorEmail: z.string().email(),
 });
 
@@ -109,8 +107,8 @@ export const postRouter = createRouter()
     async resolve({ input, ctx }) {
       const post = await ctx.prisma.post.create({
         data: {
-          title: input.data.title,
-          content: input.data.content,
+          title: input.title,
+          content: input.content,
           author: {
             connect: {
               email: input.authorEmail,
