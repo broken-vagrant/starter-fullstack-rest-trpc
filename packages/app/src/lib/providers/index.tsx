@@ -14,8 +14,8 @@ const trpcClient = trpc.createClient({
   url: 'http://localhost:4000/trpc',
   fetch: async (url, opts) => {
     return fetch(url, {
-      ...opts,
       ...(await getFetchOptions()),
+      ...opts,
     });
   },
   transformer: superjson,
