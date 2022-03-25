@@ -1,19 +1,35 @@
-export function getErrorMessage(error: any) {
-  if (error.errors) {
-    for (const graphQLError of error.errors) {
-      if (graphQLError.extensions) {
-        const { code } = graphQLError.extensions;
-        if (!code) {
-          return 'Something went wrong!';
-        }
-        if (code === 'BAD_USER_INPUT') {
-          return 'User Input Error';
-        }
-        if (code === 'UNAUTHENTICATED') {
-          return 'Authentication Error';
-        }
+import { TRPCClientErrorLike } from '@trpc/client';
+import { AppRouter } from './trpc';
+
+export type FormattedError = {
+  message?: string;
+  formErrors?: string[];
+  fieldErrors?: {
+    [k: string]: string[];
+  };
+};
+export function formatError(
+  error: TRPCClientErrorLike<AppRouter> | Error
+): FormattedError {
+  if ('shape' in error && error.shape && 'data' in error.shape) {
+    const { data } = error.shape;
+    if (data.code === 'INTERNAL_SERVER_ERROR') {
+      return {
+        message: 'Something went wrong!',
+      };
+    }
+    if (data.code === 'BAD_REQUEST') {
+      if (data.zodError) {
+        return {
+          ...data.zodError,
+        };
       }
+      return {
+        message: error.message,
+      };
     }
   }
-  return 'Something went wrong!';
+  return {
+    message: 'Something went wrong!',
+  };
 }

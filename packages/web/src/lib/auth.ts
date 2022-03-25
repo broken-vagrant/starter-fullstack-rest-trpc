@@ -22,9 +22,11 @@ export const getFetchOptions = async (): Promise<RequestInit> => {
   await tokenRefresher.refresh();
 
   return {
+    method: 'POST',
     // credentials: "include" is REQUIRED for cookies to work
     credentials: 'include',
     headers: {
+      'Content-Type': 'application/json',
       ...getHeaders(),
     },
   };

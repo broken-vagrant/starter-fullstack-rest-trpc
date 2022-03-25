@@ -1,21 +1,18 @@
 import { sessionChannel } from '~/lib/broadcast';
 import { setJwtToken, setRefreshToken } from '~/utils/jwt';
-import {
-  useLogoutMutation,
-  useWhoAmIQuery,
-} from '@/__generated__/graphqlTypes';
 import { ReactNode } from 'react';
 import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { trpc } from '~/utils/trpc';
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  const { data } = useWhoAmIQuery(undefined, {
+  const { data } = trpc.useQuery(['user.whoami'], {
     staleTime: 30 * 1000,
   });
   const navigate = useNavigate();
   const client = useQueryClient();
-  const { mutate } = useLogoutMutation({
+  const { mutate } = trpc.useMutation('user.logout', {
     onSuccess: () => {
       try {
         setJwtToken('');
@@ -32,7 +29,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
     },
   });
   const handleLogout = () => {
-    mutate({});
+    mutate();
   };
 
   return (
@@ -45,9 +42,9 @@ const Layout = ({ children }: { children: ReactNode }) => {
         </Link>
         <div className="flex items-center">
           <div>
-            Profile: <strong>{data?.whoami?.name || 'Guest'}</strong>
+            Profile: <strong>{data?.name || 'Guest'}</strong>
           </div>
-          {data?.whoami?.name && (
+          {data?.name && (
             <button onClick={handleLogout} className="ml-4 teal-btn">
               log out
             </button>

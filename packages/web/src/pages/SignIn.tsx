@@ -1,16 +1,17 @@
 import { setJwtToken, setRefreshToken } from '~/utils/jwt';
-import { useLoginMutation, useWhoAmIQuery } from '~/__generated__/graphqlTypes';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { trpc } from '~/utils/trpc';
+import { FormattedError, formatError } from '~/utils';
 
 function App() {
   // GraphQL API
   const navigate = useNavigate();
-  useWhoAmIQuery(undefined, {
+  trpc.useQuery(['user.whoami'], {
     onSuccess: (data) => {
-      if (data.whoami) {
+      if (data) {
         navigate('/');
       }
     },
@@ -18,12 +19,13 @@ function App() {
   const client = useQueryClient();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { mutate, error, isLoading } = useLoginMutation<Error>({
+  const [formattedErrors, setFormattedErrors] = useState<FormattedError>({});
+  const { mutate, error, isLoading } = trpc.useMutation('user.login', {
     onSuccess: async (data) => {
-      if (data.login) {
+      if (data) {
         // set tokens
-        setJwtToken(data.login?.jwt);
-        setRefreshToken(data.login?.refreshToken as string);
+        setJwtToken(data?.jwt);
+        setRefreshToken(data?.refreshToken as string);
 
         // refresh WhoAmI query after setting tokens
         await client.invalidateQueries(['WhoAmI']);
@@ -32,6 +34,11 @@ function App() {
       }
     },
   });
+
+  useEffect(() => {
+    if (error) setFormattedErrors(formatError(error));
+  }, [error]);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     client.clear();
@@ -41,13 +48,15 @@ function App() {
     });
   };
   return (
-    <div className="flex flex-col items-center ">
+    <div className="flex flex-col items-center  mx-auto md:max-w-[300px]">
       <h2 className="m-1 text-2xl font-extrabold">Login</h2>
-      <form onSubmit={handleSubmit} className="my-8">
-        {error && (
-          <div className="error">
-            {error.message || 'Something went wrong!'}
-          </div>
+      <form onSubmit={handleSubmit} className="my-8 w-full">
+        {formattedErrors.formErrors ? (
+          <div className="mt-8 error">{formattedErrors?.formErrors[0]}</div>
+        ) : (
+          formattedErrors.message && (
+            <div className="mt-8 error">{formattedErrors.message}</div>
+          )
         )}
         <div>
           <input
@@ -60,6 +69,9 @@ function App() {
             required
             className="base-input"
           />
+          <span className="block field-error">
+            {formattedErrors?.fieldErrors?.email}
+          </span>
         </div>
         <div className="mt-8">
           <input
@@ -72,6 +84,9 @@ function App() {
             required
             className="base-input"
           />
+          <span className="block field-error">
+            {formattedErrors?.fieldErrors?.password}
+          </span>
         </div>
         <button type="submit" className="teal-btn mt-8">
           {isLoading ? 'logging in...' : 'Login'}

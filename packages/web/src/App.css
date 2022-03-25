@@ -133,9 +133,15 @@ pre {
   margin: 1rem 0;
   text-align: center;
 }
+.field-error {
+  color: red;
+  margin: 0.5rem 0;
+  text-align: left;
+  font-size: 0.8rem;
+}
 @layer utilities {
   .base-input {
-    @apply border-2 border-gray-200 rounded-md text-base p-2;
+    @apply border-2 border-gray-200 rounded-md text-base p-2 w-full;
   }
   .teal-btn {
     @apply py-2 px-4 rounded-sm bg-teal-700 text-white hover:bg-teal-600;
