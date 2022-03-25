@@ -5,8 +5,7 @@ import { trpc } from '~/utils/trpc';
 
 const LoadUsers = () => {
   const [enabled, setEnabled] = useState(false);
-  // FIX:
-  const { data, error, isLoading } = trpc.useQuery([''], {
+  const { data, error, isLoading } = trpc.useQuery(['user.all'], {
     enabled: enabled,
     onError: (err) => {
       console.error(err);
@@ -27,7 +26,7 @@ const LoadUsers = () => {
       {error && <div>{error.message}</div>}
       {!isLoading && !error && (
         <ul className="mt-8">
-          {data?.allUsers.map((user) => {
+          {data?.map((user) => {
             return (
               <li key={user.id}>
                 <pre>{JSON.stringify(user)}</pre>
@@ -41,7 +40,7 @@ const LoadUsers = () => {
 };
 const Demo = () => {
   const navigate = useNavigate();
-  const { data, isLoading } = useWhoAmIQuery(undefined, {
+  const { isLoading, data } = trpc.useQuery(['user.whoami'], {
     onError: () => {
       navigate('/sign-in');
     },
@@ -50,14 +49,14 @@ const Demo = () => {
   if (isLoading) {
     return <LoadingSpinner />;
   }
-  if (!data?.whoami) {
+  if (!data) {
     return (
       <div className="flex justify-center items-center">
         Please &nbsp; <Link to="/sign-in">sign in</Link>.
       </div>
     );
   }
-  return <section>{data?.whoami?.name && <LoadUsers />}</section>;
+  return <section>{data?.name && <LoadUsers />}</section>;
 };
 
 export default Demo;

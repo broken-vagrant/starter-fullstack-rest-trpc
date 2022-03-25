@@ -1,6 +1,6 @@
 import { createReactQueryHooks } from '@trpc/react';
 import { inferProcedureInput, inferProcedureOutput } from '@trpc/server';
-import type { AppRouter } from '../../../api/src/routers/_app';
+import type { AppRouter } from '@starter/api/src/routers/_app';
 
 export const trpc = createReactQueryHooks<AppRouter>();
 
