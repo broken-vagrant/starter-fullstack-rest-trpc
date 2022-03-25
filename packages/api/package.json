@@ -4,6 +4,9 @@
   "description": "Server for starter",
   "main": "index.js",
   "private": "true",
+  "files": [
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zkindest/starter-fullstack-trpc.git"
@@ -39,7 +42,7 @@
   },
   "dependencies": {
     "@prisma/client": "^3.11.0",
-    "@trpc/server": "^9.20.1",
+    "@trpc/server": "^9.20.3",
     "cookie": "^0.4.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
