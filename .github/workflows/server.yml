@@ -2,7 +2,7 @@ name: Server
 
 on:
   push:
-    branches: [main, renovate/**]
+    branches: [main]
     paths:
       - "packages/server/**"
   pull_request:
