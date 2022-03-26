@@ -1,9 +1,11 @@
 import { createReactQueryHooks } from '@trpc/react';
 import { inferProcedureInput, inferProcedureOutput } from '@trpc/server';
 import type { AppRouter } from '@starter/api/src/routers/_app';
+import superjson from 'superjson';
 
 export const trpc = createReactQueryHooks<AppRouter>();
 
+export const transformer = superjson;
 /**
  * This is a helper method to infer the output of a query resolver
  * @example type HelloOutput = inferQueryOutput<'hello'>

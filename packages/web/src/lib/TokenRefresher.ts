@@ -1,10 +1,12 @@
 import decodeJWT, { JwtPayload } from 'jwt-decode';
+import { BACKEND_URL } from '~/constants';
 import {
   getJwtToken,
   getRefreshToken,
-  setJwtToken,
   removeJwtTokens,
+  setJwtToken,
 } from '~/utils/jwt';
+import { transformer } from '~/utils/trpc';
 
 export default class TokenRefresher {
   private retryCount: number;
@@ -39,42 +41,36 @@ export default class TokenRefresher {
       console.log('fetchAccessToken jwt:', jwt);
 
       const refreshToken = getRefreshToken();
+      if (!refreshToken) {
+        console.warn('refresh token not found');
+        return;
+      }
       const fingerPrintHash =
         jwt?.['https://hasura.io/jwt/claims']?.['X-User-Fingerprint'];
 
-      const request = await fetch(import.meta.env['VITE_BACKEND_URL'], {
+      const request = await fetch(`${BACKEND_URL}/trpc/user.refreshToken`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // credentials: "include" is REQUIRED for cookies to work
         credentials: 'include',
-        body: JSON.stringify({
-          query: `
-                  mutation RefreshJwtToken($data: RefreshTokenInput!) {
-                    refreshToken(data: $data) {
-                      jwt
-                    }
-                  }
-                `,
-          variables: {
-            data: {
-              refreshToken,
-              fingerPrintHash,
-            },
-          },
-        }),
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(
+          transformer.serialize({
+            refreshToken,
+            fingerPrintHash,
+          })
+        ),
       });
+      const data = await request.json();
 
-      const result = await request.json();
-      const accessToken = result.data.refreshToken.jwt;
-      if (accessToken) {
-        // const claims = decodeJWT(accessToken);
-        setJwtToken(accessToken);
+      if (data?.result?.data?.json?.jwt) {
+        setJwtToken(data.result.data.json.jwt);
       } else {
         removeJwtTokens();
       }
     } catch (err) {
+      console.error(err);
+
       console.warn('Your refresh token is invalid. Try to reauthenticate.');
       removeJwtTokens();
     }

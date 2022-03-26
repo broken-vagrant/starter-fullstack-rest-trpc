@@ -9,9 +9,9 @@ export function getHeaders() {
    */
   const headers: HeadersInit = {};
   const token = getJwtToken();
+  console.log({ token });
 
   if (token) headers['authorization'] = `Bearer ${token}`;
-  headers['content-type'] = 'application/json';
   return headers;
 }
 
@@ -25,9 +25,5 @@ export const getFetchOptions = async (): Promise<RequestInit> => {
     method: 'POST',
     // credentials: "include" is REQUIRED for cookies to work
     credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      ...getHeaders(),
-    },
   };
 };

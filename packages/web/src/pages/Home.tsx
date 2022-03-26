@@ -20,7 +20,7 @@ const LoadUsers = () => {
     <div className="flex flex-col items-center">
       <h2 className="m-1 text-2xl font-extrabold">Welcome to Demo!</h2>
       <button onClick={getAllUsers} className="teal-btn">
-        Load users
+        {isLoading ? 'loading...' : 'Load users'}
       </button>
       {isLoading && <div>Loading...</div>}
       {error && <div>{error.message}</div>}
