@@ -7,3 +7,5 @@ prisma/*.db
 
 .env.development
 .env.test
+
+*.tsbuildinfo

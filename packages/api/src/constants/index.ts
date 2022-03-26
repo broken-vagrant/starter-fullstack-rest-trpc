@@ -6,5 +6,11 @@ export const JWT_TOKEN_EXPIRES_IN = process.env.JWT_TOKEN_EXPIRES_IN;
 export const JWT_REFRESH_TOKEN_EXPIRES_IN =
   process.env.JWT_REFRESH_TOKEN_EXPIRES_IN;
 
+export const getRefreshTokenExpiryTime = () => {
+  if (!JWT_REFRESH_TOKEN_EXPIRES_IN)
+    throw new Error('refresh token expiry not set');
+  return Number(JWT_REFRESH_TOKEN_EXPIRES_IN);
+};
+
 export const FINGERPRINT_COOKIE_NAME = '__Secure__User-Fgp';
 export const FINGERPRINT_COOKIE_MAX_AGE = 60 * 60 * 8; // 8 hours
