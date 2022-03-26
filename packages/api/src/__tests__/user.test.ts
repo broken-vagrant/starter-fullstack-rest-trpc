@@ -1,22 +1,12 @@
-import { prisma } from '~/context';
 import { inferMutationInput } from '~/utils/trpc';
 import { appRouter } from '../routers/_app';
-import httpMocks from 'node-mocks-http';
-import { createFakeUser } from './__helpers';
+import { createFakeContext, createFakeUser } from './__helpers';
 
 const user1 = createFakeUser();
 
 describe('user', () => {
   test('create', async () => {
-    const req = httpMocks.createRequest();
-    const res = httpMocks.createResponse();
-
-    const caller = appRouter.createCaller({
-      prisma,
-      req,
-      res,
-      user: null,
-    });
+    const caller = appRouter.createCaller(createFakeContext({}));
 
     const user = await caller.mutation('user.signUp', user1);
 
@@ -27,21 +17,11 @@ describe('user', () => {
   });
 
   test('login', async () => {
-    const req = httpMocks.createRequest();
-    const res = httpMocks.createResponse();
-
-    const caller = appRouter.createCaller({
-      prisma,
-      req,
-      res,
-      user: null,
-    });
+    const caller = appRouter.createCaller(createFakeContext({}));
 
     const loginInput: inferMutationInput<'user.login'> = {
-      data: {
-        email: user1.data.email,
-        password: user1.data.password,
-      },
+      email: user1.email,
+      password: user1.password,
     };
     const logged = await caller.mutation('user.login', loginInput);
 
