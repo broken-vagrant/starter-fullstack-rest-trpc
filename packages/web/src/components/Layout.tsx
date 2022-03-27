@@ -5,6 +5,7 @@ import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { trpc } from '~/utils/trpc';
+import { tokenRefresher } from '~/lib/auth';
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const { data } = trpc.useQuery(['user.whoami'], {
@@ -21,6 +22,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
         sessionStorage.clear();
         sessionChannel.postMessage({ type: 'logout' });
         navigate('/');
+        tokenRefresher.reset();
       } catch (err) {
         console.error(err);
       } finally {

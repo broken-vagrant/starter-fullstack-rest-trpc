@@ -9,21 +9,13 @@ export function getHeaders() {
    */
   const headers: HeadersInit = {};
   const token = getJwtToken();
-  console.log({ token });
 
   if (token) headers['authorization'] = `Bearer ${token}`;
+  headers['content-type'] = 'application/json';
   return headers;
 }
 
-export const getFetchOptions = async (): Promise<RequestInit> => {
-  // info: set default fetch request params in return {...params}
-
+export const preFetch = async () => {
   // refresh token
   await tokenRefresher.refresh();
-
-  return {
-    method: 'POST',
-    // credentials: "include" is REQUIRED for cookies to work
-    credentials: 'include',
-  };
 };

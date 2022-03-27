@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { trpc } from '~/utils/trpc';
 import { formatError, FormattedError } from '~/utils';
 import { useEffect, useState } from 'react';
+import { tokenRefresher } from '~/lib/auth';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -22,6 +23,9 @@ const SignUpPage = () => {
   const [formattedErrors, setFormattedErrors] = useState<FormattedError>({});
   const { mutate, isLoading, error } = trpc.useMutation('user.signUp', {
     onSuccess: async (data) => {
+      // reset tokenRefresher data
+      tokenRefresher.reset();
+
       setJwtToken(data.jwt);
       setRefreshToken(data.refreshToken);
 

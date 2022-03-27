@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { transformer, trpc } from '~/utils/trpc';
-import { getFetchOptions, getHeaders } from '../auth';
+import { getHeaders, preFetch } from '../auth';
 import { BACKEND_URL } from '~/constants';
 
 interface AppProviderProps {
@@ -12,13 +12,21 @@ interface AppProviderProps {
 const queryClient = new QueryClient();
 const trpcClient = trpc.createClient({
   url: `${BACKEND_URL}/trpc`,
-  fetch: async (url, opts) => {
+  fetch: async (url, defaultOpts) => {
+    await preFetch();
+
+    const newOpts: RequestInit = {
+      ...defaultOpts,
+      credentials: 'include',
+      headers: {
+        ...defaultOpts?.headers,
+        ...getHeaders(),
+      },
+    };
     return fetch(url, {
-      ...(await getFetchOptions()),
-      ...opts,
+      ...newOpts,
     });
   },
-  headers: getHeaders,
   transformer,
 });
 

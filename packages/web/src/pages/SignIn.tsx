@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { trpc } from '~/utils/trpc';
 import { FormattedError, formatError } from '~/utils';
+import { tokenRefresher } from '~/lib/auth';
 
 function App() {
   // GraphQL API
@@ -23,6 +24,9 @@ function App() {
   const { mutate, error, isLoading } = trpc.useMutation('user.login', {
     onSuccess: async (data) => {
       if (data) {
+        // reset tokenRefresher data
+        tokenRefresher.reset();
+
         // set tokens
         setJwtToken(data?.jwt);
         setRefreshToken(data?.refreshToken as string);

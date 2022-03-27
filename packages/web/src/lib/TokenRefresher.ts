@@ -32,6 +32,7 @@ export default class TokenRefresher {
     const now = new Date();
     const isValid = expirationTimeInSeconds >= now.getTime();
 
+    console.log({ isValid, retry: this.currRetryCount });
     // Return true if the token is still valid, otherwise false and trigger a token refresh
     return isValid;
   }
@@ -76,12 +77,16 @@ export default class TokenRefresher {
     }
   }
   async refresh() {
-    if (this.currRetryCount >= this.retryCount) {
-      return;
-    }
     if (!this.isTokenValidOrUndefined()) {
+      if (this.currRetryCount >= this.retryCount) {
+        return;
+      }
+
       this.currRetryCount += 1;
       await this.fetchToken();
     }
+  }
+  reset() {
+    this.currRetryCount = 0;
   }
 }

@@ -5,7 +5,7 @@ export type Action<T = undefined, P = undefined> = P extends undefined
   : { type: T; payload: P };
 
 export type SessionChannelActions =
-  | Action<'new-user'>
+  | Action<'new-tab'>
   | Action<'session-data', string>
   | Action<'set-jwt', string>
   | Action<'set-refreshToken', string>
