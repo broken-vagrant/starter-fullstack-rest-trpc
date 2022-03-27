@@ -100,7 +100,10 @@ const SignUpPage = () => {
         </button>
       </form>
       <div>
-        Already have an account, <Link to="/sign-in">Sign in</Link>
+        Already have an account,{' '}
+        <Link to="/sign-in" className="link">
+          Sign in
+        </Link>
       </div>
     </div>
   );

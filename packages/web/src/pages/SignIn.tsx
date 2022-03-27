@@ -97,7 +97,10 @@ function App() {
         </button>
       </form>
       <div>
-        Don't have account, <Link to="/sign-up">Sign up</Link>
+        Don't have account,{' '}
+        <Link to="/sign-up" className="link">
+          Sign up
+        </Link>
       </div>
     </div>
   );

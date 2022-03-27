@@ -42,7 +42,12 @@ const Layout = ({ children }: { children: ReactNode }) => {
             Auth Demo
           </h1>
         </Link>
-        <div className="flex items-center">
+        <div className="flex items-center gap-4">
+          <div>
+            <Link to="/about" className="underline">
+              about
+            </Link>
+          </div>
           <div>
             Profile: <strong>{data?.name || 'Guest'}</strong>
           </div>

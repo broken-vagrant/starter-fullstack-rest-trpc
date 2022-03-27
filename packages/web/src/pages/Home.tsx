@@ -52,7 +52,11 @@ const Demo = () => {
   if (!data) {
     return (
       <div className="flex justify-center items-center">
-        Please &nbsp; <Link to="/sign-in">sign in</Link>.
+        Please &nbsp;{' '}
+        <Link to="/sign-in" className="link">
+          sign in
+        </Link>
+        .
       </div>
     );
   }
