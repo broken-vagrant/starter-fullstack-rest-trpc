@@ -10,13 +10,12 @@ import { tokenRefresher } from '~/lib/auth';
 function App() {
   // GraphQL API
   const navigate = useNavigate();
-  trpc.useQuery(['user.whoami'], {
-    onSuccess: (data) => {
-      if (data) {
-        navigate('/');
-      }
-    },
-  });
+  const { data } = trpc.useQuery(['user.whoami']);
+  useEffect(() => {
+    if (data) {
+      navigate('/');
+    }
+  }, [data]);
   const client = useQueryClient();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -31,7 +30,7 @@ function App() {
         setJwtToken(data?.jwt);
         setRefreshToken(data?.refreshToken as string);
 
-        // refresh WhoAmI query after setting tokens
+        // refresh queries
         await client.invalidateQueries(['WhoAmI']);
 
         navigate('/');

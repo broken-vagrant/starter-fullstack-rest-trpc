@@ -6,7 +6,7 @@ const LoadingSpinner = () => {
       className="flex justify-center items-center w-[inherit] h-[inherit] min-h-[inherit]"
       aria-label="loading"
     >
-      <BubbleLoading className="text-blue-700 text-4xl" />
+      <BubbleLoading className="text-blue-700 text-8xl" />
     </div>
   );
 };

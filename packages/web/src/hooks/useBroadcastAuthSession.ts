@@ -34,11 +34,11 @@ const useBroadcastAuthSession = ({
             break;
           case 'set-jwt':
             sessionStorage.setItem('jwt', msg.payload);
-            await queryClient.invalidateQueries(['WhoAmI']);
+            await queryClient.refetchQueries(['WhoAmI']);
             break;
           case 'set-refreshToken':
             sessionStorage.setItem('refreshToken', msg.payload);
-            await queryClient.invalidateQueries(['WhoAmI']);
+            await queryClient.refetchQueries(['WhoAmI']);
             break;
           case 'logout':
             sessionStorage.clear();

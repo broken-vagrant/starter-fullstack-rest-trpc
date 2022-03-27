@@ -8,9 +8,7 @@ import { trpc } from '~/utils/trpc';
 import { tokenRefresher } from '~/lib/auth';
 
 const Layout = ({ children }: { children: ReactNode }) => {
-  const { data } = trpc.useQuery(['user.whoami'], {
-    staleTime: 30 * 1000,
-  });
+  const { data } = trpc.useQuery(['user.whoami']);
   const navigate = useNavigate();
   const client = useQueryClient();
   const { mutate } = trpc.useMutation('user.logout', {
@@ -46,6 +44,16 @@ const Layout = ({ children }: { children: ReactNode }) => {
           <div>
             <Link to="/about" className="underline">
               about
+            </Link>
+          </div>
+          <div>
+            <Link to="/sign-in" className="underline">
+              sign-in
+            </Link>
+          </div>
+          <div>
+            <Link to="/sign-up" className="underline">
+              sign-up
             </Link>
           </div>
           <div>

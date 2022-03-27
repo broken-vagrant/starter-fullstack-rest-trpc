@@ -10,13 +10,13 @@ import { tokenRefresher } from '~/lib/auth';
 const SignUpPage = () => {
   const navigate = useNavigate();
 
-  trpc.useQuery(['user.whoami'], {
-    onSuccess: (data) => {
-      if (data) {
-        navigate('/');
-      }
-    },
-  });
+  const { data } = trpc.useQuery(['user.whoami']);
+
+  useEffect(() => {
+    if (data) {
+      navigate('/');
+    }
+  }, [data]);
 
   const client = useQueryClient();
 
@@ -29,7 +29,7 @@ const SignUpPage = () => {
       setJwtToken(data.jwt);
       setRefreshToken(data.refreshToken);
 
-      // refresh WhoAmI query after setting tokens
+      // refresh queries
       await client.invalidateQueries(['WhoAmI']);
 
       navigate('/');
