@@ -2,3 +2,10 @@ dist
 temp
 node_modules
 .idea
+
+prisma/*.db
+
+.env.development
+.env.test
+
+*.tsbuildinfo

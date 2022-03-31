@@ -11,14 +11,17 @@
     "strict": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "rootDir": "./src",
     "baseUrl": "./",
     "paths": {
       "~/*": ["src/*"]
-    }
+    },
+    "composite": true
   },
   "include": ["src", "env.d.ts"],
   "exclude": ["node_modules"],
   "ts-node": {
+    "transpileOnly": true,
     "require": ["tsconfig-paths/register", "dotenv/config"] // to make path aliases work with ts-node
   }
 }

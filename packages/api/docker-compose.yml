@@ -1,13 +1,14 @@
-version: "3.6"
+# use root/my-password as username/password
+version: '3.6'
 services:
   mysql:
     image: mysql
     ports:
-      - "3306:3306"
+      - '3306:3306'
     restart: unless-stopped
     volumes:
       - db_data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: my-password
 volumes:
   db_data:

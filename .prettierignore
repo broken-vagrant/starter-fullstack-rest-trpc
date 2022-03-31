@@ -1,0 +1,16 @@
+# Ignore artifacts:
+build
+dist
+# Ignore all HTML files:
+*.html
+*.graphql
+
+__generated__
+
+.yarn
+node_modules/
+
+*-lock
+.*.js
+.husky
+.github

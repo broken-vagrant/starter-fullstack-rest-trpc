@@ -1,12 +1,13 @@
-import tokenGenerator from "../libs/TokenGenerator";
+import { DecodedUser } from '~/types';
+import tokenGenerator from '../libs/TokenGenerator';
 
-export const getUser = (token: string) => {
+export const getUser = (token: string): DecodedUser | null => {
   try {
     const decoded: any = tokenGenerator.verify(token);
-    const claims = decoded["https://hasura.io/jwt/claims"];
+    const claims = decoded['https://hasura.io/jwt/claims'];
 
     return {
-      id: claims["X-Hasura-User-Id"],
+      id: Number(claims['X-Hasura-User-Id']),
       ...claims,
     };
   } catch (err) {
@@ -16,10 +17,10 @@ export const getUser = (token: string) => {
 
 export const getCookie = (cookieStr: string | undefined, key: string) => {
   const cookie = cookieStr
-    ?.split(";")
-    .filter((x) => x.trim().split("=")[0] === key)[0];
+    ?.split(';')
+    .filter((x) => x.trim().split('=')[0] === key)[0];
   if (!cookie) {
-    return "";
+    return '';
   }
-  return cookie.split("=")[1];
+  return cookie.split('=')[1];
 };

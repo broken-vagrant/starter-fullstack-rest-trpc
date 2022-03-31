@@ -1,29 +1,35 @@
-import express from "express";
-import * as trpcExpress from "@trpc/server/adapters/express";
-import { appRouter } from "./routers/_app";
-import { createContext } from "./context";
-import cors from "cors";
+import express from 'express';
+import * as trpcExpress from '@trpc/server/adapters/express';
+import { appRouter } from './routers/_app';
+import { createContext } from './context';
+import cors from 'cors';
 
-const app = express();
+export const getServer = async () => {
+  const app = express();
 
-app.use(cors());
+  app.use(
+    cors({
+      origin: process.env.FRONTEND_URL,
+      credentials: true,
+    })
+  );
+  app.use(express.json());
 
-console.log(process.env.SHADOW_DATABASE_URL);
+  app.use((req, _res, next) => {
+    // request logger
+    console.log('⬅️ ', req.method, req.path, req.body ?? req.query);
 
-app.use((req, _res, next) => {
-  // request logger
-  console.log("⬅️ ", req.method, req.path, req.body ?? req.query);
+    next();
+  });
 
-  next();
-});
+  app.use(
+    '/trpc',
+    trpcExpress.createExpressMiddleware({
+      router: appRouter,
+      createContext,
+    })
+  );
 
-app.use(
-  "/trpc",
-  trpcExpress.createExpressMiddleware({
-    router: appRouter,
-    createContext,
-  })
-);
-app.get("/", (_req, res) => res.send("hello"));
-
-export default app;
+  app.get('/', (_req, res) => res.send('hello'));
+  return app;
+};
