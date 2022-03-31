@@ -1,10 +1,10 @@
-name: Server
+name: Api
 
 on:
   push:
     branches: [main]
     paths:
-      - 'packages/server/**'
+      - 'packages/api/**'
 
 jobs:
   test:
