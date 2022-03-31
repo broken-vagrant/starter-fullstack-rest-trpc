@@ -2,47 +2,30 @@ name: App
 
 on:
   push:
-    branches: [main, renovate/**]
-    paths:
-      - 'packages/app/**'
-  pull_request:
-    paths:
-      - 'packages/app/**'
     branches: [main]
+    paths:
+      - 'packages/app/**'
 
 jobs:
   test:
     name: Tests
     if: ${{ !contains(github.event.head_commit.message, '[skip ci]') }}
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [14]
     steps:
       - name: Checkout Source code
         uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@646cdf48217256a3d0b80361c5a50727664284f2
         with:
-          node-version: ${{ matrix.node-version }}
+          version: 6.10.0
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$( yarn config get cacheFolder )"
-
-      - name: Cache node_modules
-        uses: actions/cache@v2
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+      - uses: actions/setup-node@v3
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          node-version: '15'
+          cache: 'pnpm'
 
       - name: Install
-        run: yarn
+        run: pnpm install
 
       - name: Test
-        run: yarn app test
+        run: pnpm app test
