@@ -6,11 +6,10 @@ interface RefreshOptions {
   verify?: Exclude<VerifyOptions, 'jwtid'>;
   jwtid?: string;
 }
-interface JWTParams {
+interface JWTParams extends SignOptions {
   allowedRoles: string[];
   defaultRole: string;
   otherClaims?: Record<string, string>;
-  expiresIn?: string;
 }
 
 class TokenGenerator {
