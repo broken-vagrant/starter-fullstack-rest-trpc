@@ -1,17 +1,27 @@
 {
   "extends": ["config:base"],
+  "automergeType": "branch",
   "packageRules": [
+    {
+      "extends": [
+        "packages:linters"
+      ],
+      "automerge": true,
+    },
+    {
+      "extends": [
+        "packages:test"
+      ],
+      "automerge": true,
+    },
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "automerge": true,
-      "excludePackageNames": []
     },
     {
       "matchPackageNames": [
         "concurrently",
-        "prettier",
         "typescript",
-        "eslint",
         "ts-node"
       ],
       "matchUpdateTypes": ["major", "minor", "patch", "pin", "digest"],
