@@ -1,9 +1,9 @@
 {
   "extends": ["config:base"],
-  "automergeType": "branch",
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automergeType": "branch",
       "automerge": true,
       "commitBody": "Minor updates: [skip ci]"
     }
