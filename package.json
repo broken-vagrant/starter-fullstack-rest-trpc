@@ -31,5 +31,5 @@
     "node": "16.x",
     "pnpm": "6.x"
   },
-  "packageManager": "pnpm@6.0.0"
+  "packageManager": "pnpm@6.35.1"
 }

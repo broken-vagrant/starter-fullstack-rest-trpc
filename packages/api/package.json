@@ -91,7 +91,7 @@
   "prisma": {
     "seed": "ts-node -r dotenv/config prisma/seed.ts"
   },
-  "packageManager": "pnpm@6.0.0",
+  "packageManager": "pnpm@6.35.1",
   "_moduleAliases": {
     "~": "dist"
   }
